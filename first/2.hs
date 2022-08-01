@@ -33,3 +33,24 @@ h = max 42
 -- Answer 2.2.7 = (,)
 -- Answer 2.2.8 = snd
 -- Answer 2.2.9 = uncurry,flip,(,)
+
+-- 2.3
+-- Answer 2.3.3 = Num Bool
+
+class Printable a where
+    toString :: a -> String
+
+instance Printable Bool where
+    toString a
+        | a         = "true"
+        | otherwise = "false"
+        
+instance Printable () where
+    toString a = "unit type"
+
+
+instance (Printable a, Printable b) => Printable (a, b) where
+    toString (a, b) = "(" ++ toString a ++ "," ++ toString b ++ ")"
+
+
+-- 2.4
