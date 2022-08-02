@@ -24,10 +24,10 @@ on3 op f x y z = op (f x) (f y) (f z)
 
 
 -- 2.2
-doItYourself = f . g . h
-f = logBase 2
-g = (^3)
-h = max 42
+-- doItYourself = f . g . h
+-- f = logBase 2
+-- g = (^3)
+-- h = max 42
 
 
 -- Answer 2.2.7 = (,)
@@ -54,3 +54,18 @@ instance (Printable a, Printable b) => Printable (a, b) where
 
 
 -- 2.4
+class KnownToGork a where
+    stomp :: a -> a
+    doesEnrageGork :: a -> Bool
+
+class KnownToMork a where
+    stab :: a -> a
+    doesEnrageMork :: a -> Bool
+
+class (KnownToGork a, KnownToMork a) => KnownToGorkAndMork a where
+    stompOrStab :: a -> a
+    stompOrStab a
+        | doesEnrageGork a && doesEnrageMork a = stomp (stab a)
+        | doesEnrageMork a = stomp a
+        | doesEnrageGork a = stab a
+        | otherwise = a
