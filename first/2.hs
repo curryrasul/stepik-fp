@@ -69,3 +69,26 @@ class (KnownToGork a, KnownToMork a) => KnownToGorkAndMork a where
         | doesEnrageMork a = stomp a
         | doesEnrageGork a = stab a
         | otherwise = a
+
+-- 2.4.5
+{-
+a = 127.2
+b = 24.1
+c = 20.1
+d = 2
+-}
+
+class (Enum a, Bounded a, Eq a) => SafeEnum a where
+    ssucc :: a -> a
+    ssucc a
+        | a == maxBound = minBound
+        | otherwise = succ a 
+
+    spred :: a -> a
+    spred a
+        | a == minBound = maxBound
+        | otherwise = pred a
+
+
+avg :: Int -> Int -> Int -> Double
+avg a b c = (/ 3) $ sum $ map fromIntegral [a, b, c]
