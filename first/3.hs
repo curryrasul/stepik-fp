@@ -95,3 +95,32 @@ delAllUpper = unwords . filter (any isLower) . words
 
 max3 :: Ord a => [a] -> [a] -> [a] -> [a]
 max3 = zipWith3 (\a b c -> a `max` b `max` c)
+
+
+-- 3.3
+fibStream :: [Integer]
+fibStream = 0 : 1 : zipWith (+) fibStream (tail fibStream)
+
+
+repeatHelper = id
+
+
+data Odd = Odd Integer 
+    deriving (Eq, Show)
+
+instance Enum Odd where
+    succ (Odd x) = Odd $ x + 2
+    pred (Odd x) = Odd $ x - 2
+    toEnum x = Odd $ toInteger x * 2 + 1
+    fromEnum (Odd x) = quot (fromInteger x - 1) 2
+    enumFrom = iterate succ
+    enumFromThen (Odd x) (Odd y) = map Odd [x, y ..]
+    enumFromTo (Odd x) (Odd y) = map Odd [x, x + 2 .. y]
+    enumFromThenTo (Odd x) (Odd y) (Odd z) = map Odd [x , y .. z]
+
+
+coins = []
+change :: (Ord a, Num a) => a -> [[a]]
+change n | n < 0     = []
+         | n == 0    = [[]]
+         | otherwise = [ x : xs | x <- coins, xs <- change (n - x) ]
