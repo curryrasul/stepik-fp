@@ -1,4 +1,5 @@
 import Data.Char
+import Data.ByteString (foldl')
 
 -- 3.1
 addTwoElements :: a -> a -> [a] -> [a]
@@ -124,3 +125,27 @@ change :: (Ord a, Num a) => a -> [[a]]
 change n | n < 0     = []
          | n == 0    = [[]]
          | otherwise = [ x : xs | x <- coins, xs <- change (n - x) ]
+
+-- 3.4
+concatList :: [[a]] -> [a]
+concatList = foldr (++) []
+
+
+lengthList :: [a] -> Int
+lengthList = foldr (const succ) 0
+
+
+sumOdd :: [Integer] -> Integer
+sumOdd = foldr (\x s -> if odd x then x + s else s) 0
+
+
+-- 3.5
+meanList :: [Double] -> Double
+meanList = uncurry (/) . foldr (\x (s, len) -> (s + x, len + 1)) (0, 0)
+
+
+evenOnly :: [a] -> [a]
+evenOnly = reverse . fst . foldl (\(l, curLen) x -> if odd curLen then (x : l, curLen + 1) else (l, curLen + 1)) ([], 0)
+
+evenOnlyInf :: [a] -> [a]
+evenOnlyInf = snd . foldr (\x ~(xs, ys) -> (x : ys, xs)) ([], [])
