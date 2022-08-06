@@ -1,3 +1,5 @@
+import Data.Char
+
 -- 3.1
 addTwoElements :: a -> a -> [a] -> [a]
 addTwoElements a b l = a : b : l
@@ -55,3 +57,41 @@ groupElems xs = ys : groupElems zs where
     (ys, zs) = span (== head xs) xs
 
 -- 3.2
+readDigits :: String -> (String, String)
+readDigits = span isDigit 
+
+
+filterDisj :: (a -> Bool) -> (a -> Bool) -> [a] -> [a]
+filterDisj p1 p2 [] = []
+filterDisj p1 p2 (x : xs)
+    | p1 x || p2 x = x : filterDisj p1 p2 xs
+    | otherwise = filterDisj p1 p2 xs
+
+
+qsort :: Ord a => [a] -> [a]
+qsort [] = []
+qsort (p : xs) = qsort lt ++ [p] ++ qsort gt
+    where
+        lt = filter (< p) xs
+        gt = filter (>= p) xs
+
+
+squares'n'cubes :: Num a => [a] -> [a]
+squares'n'cubes = concatMap (\x -> [x^2, x^3])
+
+
+perms :: [a] -> [[a]]
+perms [] = [[]]
+perms [x] = [[x]]
+perms (x : xs) = concatMap (insertElem x) (perms xs) 
+    where
+        insertElem x [] = [[x]]
+        insertElem x yss@(y : ys) = (x : yss) : map (y : ) (insertElem x ys)
+
+
+delAllUpper :: String -> String
+delAllUpper = unwords . filter (any isLower) . words
+
+
+max3 :: Ord a => [a] -> [a] -> [a] -> [a]
+max3 = zipWith3 (\a b c -> a `max` b `max` c)
