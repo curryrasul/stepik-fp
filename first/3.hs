@@ -149,3 +149,20 @@ evenOnly = reverse . fst . foldl (\(l, curLen) x -> if odd curLen then (x : l, c
 
 evenOnlyInf :: [a] -> [a]
 evenOnlyInf = snd . foldr (\x ~(xs, ys) -> (x : ys, xs)) ([], [])
+
+
+-- 3.6
+lastElem :: [a] -> a
+lastElem = foldl1 (flip const)
+
+
+unfoldr :: (b -> Maybe (a,b)) -> b -> [a]
+unfoldr f ini = 
+    helper (f ini)
+    where
+        helper Nothing = []
+        helper (Just (x, ini')) = x : unfoldr f ini'
+        
+revRange :: (Char,Char) -> [Char]
+revRange = unfoldr g 
+  where g = (\(a,b) -> if b < a then Nothing else Just (b,(a, pred b)))
