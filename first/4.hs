@@ -1,3 +1,7 @@
+import Data.Time.Clock
+import Data.Time.Format
+-- import System.Locale
+
 -- 4.1
 data Color = Red | Green | Blue
 
@@ -26,7 +30,7 @@ stringToColor "Green" = Green
 stringToColor "Blue"  = Blue
 
 
-data LogLevel = Error | Warning | Info
+-- data LogLevel = Error | Warning | Info
 
 cmp :: LogLevel -> LogLevel -> Ordering
 cmp x y = compare (ord x)  (ord y) where
@@ -89,5 +93,35 @@ square a = Rectangle a a
 isSquare :: Shape -> Bool
 isSquare (Rectangle a b) = a == b
 isSquare _ = False
+
+
+-- 4.3
+timeToString :: UTCTime -> String
+timeToString = formatTime defaultTimeLocale "%a %d %T"
+
+data LogLevel = Error | Warning | Info
+    deriving (Show)
+
+data LogEntry = LogEntry { timestamp :: UTCTime, logLevel :: LogLevel, message :: String }
+
+logLevelToString :: LogLevel -> String
+logLevelToString = show
+
+logEntryToString :: LogEntry -> String
+logEntryToString le = timeToString (timestamp le) ++ ": "
+    ++ logLevelToString (logLevel le) ++ ": " ++ message le
+
+
+data Person = Person { firstName :: String, lastName :: String, age :: Int }
+
+updateLastName :: Person -> Person -> Person
+updateLastName person1 person2 = person2 { lastName = lastName person1 }
+
+
+-- data Person = Person { firstName :: String, lastName :: String, age :: Int }
+
+abbrFirstName :: Person -> Person
+abbrFirstName p @ Person { firstName = (x : _ : _) } = p { firstName = x : "." }
+abbrFirstName p = p
 
 
